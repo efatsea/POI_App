@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View ,FlatList, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -25,10 +25,29 @@ const HomeScreen = ({navigation}) =>{
     )
 }
 
+
 const List=()=> {
+  const dataPoi = () => {
+    return fetch('https://warply.s3.amazonaws.com/data/test_pois.json')
+      .then((response) => response.json())
+      .then((json) => {
+        return json;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+  };
+  
   return (
     <View style={styles.tab}>
-      <Text>List</Text>
+      <FlatList
+        data={dataPoi}
+        keyExtractor={({id},index)=>id}
+        renderItem={({item})=>(
+          <Text>{item.address}</Text>
+        )}
+      />
     </View>
   );
 }
@@ -45,7 +64,7 @@ const Poi = ()=>{
   return(
       <Tab.Navigator
         screenOptions={({route})=>({
-          tabBarIcon:()=>{
+          tabBarIcon:({focused})=>{
             let iconName;
             if (route.name==='List'){
               iconName= "list-outline"
@@ -72,6 +91,9 @@ const Poi = ()=>{
 
 
 export default function App() {
+
+
+
 
     return (
       <NavigationContainer>
