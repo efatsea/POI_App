@@ -1,0 +1,22 @@
+async function getData(){
+	return fetch('https://warply.s3.amazonaws.com/data/test_pois.json')
+		.then(res=>res.son());	
+}
+
+export function fetchData(){
+	return async dispatch=>{
+		return getData()
+			.then (json=>{
+				dispatch(fetchDataSuccess(json));
+				return json;
+			})
+			.catch(error=>
+				console.log(error)
+			);
+	};
+}
+
+export const FETCH_DATA='FETCH_DATA';
+export const fetchDataSuccess = data => ({
+	type:FETCH_DATA,
+});

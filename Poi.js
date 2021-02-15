@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { Button, StyleSheet, Text, View ,FlatList, Alert } from 'react-native';
+import { Button, StyleSheet, Text, View ,FlatList, Alert, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -31,7 +31,7 @@ const List=({data})=> {
 const Maps=()=>{
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Map</Text>
+    	<Text>Map</Text>
     </View>
   );
 }
@@ -51,7 +51,8 @@ export default class Poi extends Component{
 		super(props);
 		this.state={
 			data:[],
-			isLoading: true
+			isLoading: true,
+			location: null
 		};
 	}
 
@@ -66,35 +67,50 @@ export default class Poi extends Component{
 	      .finally(() => {
 	        this.setState({ isLoading: false });
 	      });
-	  }
+	}
+
+	findCoordinates = () => {
+		navigator.geolocation.getCurrentPosition(
+			position => {
+				const location = JSON.stringify(position);
+
+				this.setState({ location });
+			},
+			error => Alert.alert(error.message),
+			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+		);
+	};
+
 
 	render(){
 		const datas= this.state.data;
 		return(
+			  <View>
+			  	
+			  	<Tab.Navigator
+			        screenOptions={({route})=>({
+			          tabBarIcon:({focused})=>{
+			            let iconName;
+			            if (route.name==='List'){
+			              iconName= "list-outline"
+			            }
+			            else iconName = 'earth-outline'
+
+			            return <Ionicons name={iconName} size={30}/>
+			          }
+			        })}
+			    >
+			    	<Tab.Screen
+			          name='Map'
+			          component={Maps}
+			        /> 
+			        <Tab.Screen name='List'>
+			          {props => <List {...props} data={datas} />}
+			        </Tab.Screen>
 			
-		      <Tab.Navigator
-		        screenOptions={({route})=>({
-		          tabBarIcon:({focused})=>{
-		            let iconName;
-		            if (route.name==='List'){
-		              iconName= "list-outline"
-		            }
-		            else iconName = 'earth-outline'
-
-		            return <Ionicons name={iconName} size={30}/>
-		          }
-		        })}
-		      >
-
-		        <Tab.Screen name='List'>
-		          {props => <List {...props} data={datas} />}
-		          
-		        </Tab.Screen>
-		        <Tab.Screen
-		          name='Map'
-		          component={Maps}
-		        /> 
-		      </Tab.Navigator>
+			    </Tab.Navigator>
+			  </View>
+		      
 		    
 	    )
 	}

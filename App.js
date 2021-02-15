@@ -6,7 +6,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 import Poi from './Poi';
+
+const rootReducer = (state={}, action) => {
+  return state
+}
+
+const store = createStore(rootReducer)
+
+
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,10 +37,13 @@ const HomeScreen = ({navigation}) =>{
 }
 
 
-export default function App() {
+export default class App extends Component {
 
+
+  render(){
     return (
-      <NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen
               name='Home'
@@ -41,9 +55,11 @@ export default function App() {
               component={Poi}
             />
           </Stack.Navigator>
-      </NavigationContainer>
+        </NavigationContainer>
+      </Provider>
       
     );
+  }
 }
 
 const styles = StyleSheet.create({
