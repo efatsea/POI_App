@@ -7,26 +7,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
+import {fetchData} from './poiAction'
+import List from './List'
 
 
 const Tab = createBottomTabNavigator();
 
 
-const List=({data})=> {
-  return (
 
-		<View style={styles.tab}>
-	      <FlatList
-	        data={data}
-	        keyExtractor={({id},index)=>id}
-	        renderItem={({item})=>(
-	          <Text>{item.address}, {item.id}</Text>
-	        )}
-	      />
-		</View>
-
-  );
-}
 
 const Maps=()=>{
   return (
@@ -45,29 +34,9 @@ const styles = StyleSheet.create({
   },
 })
 
-export default class Poi extends Component{
-
-	constructor(props){
-		super(props);
-		this.state={
-			data:[],
-			isLoading: true,
-			location: null
-		};
-	}
+class Poi extends Component{
 
 
-	componentDidMount() {
-	    fetch('https://warply.s3.amazonaws.com/data/test_pois.json')
-	      .then((response) => response.json())
-	      .then((json) => {
-	        this.setState({ data: json });
-	      })
-	      .catch((error) => console.error(error))
-	      .finally(() => {
-	        this.setState({ isLoading: false });
-	      });
-	}
 
 	findCoordinates = () => {
 		navigator.geolocation.getCurrentPosition(
@@ -83,10 +52,8 @@ export default class Poi extends Component{
 
 
 	render(){
-		const datas= this.state.data;
+		const datas= this.props.data;
 		return(
-			  <View>
-			  	
 			  	<Tab.Navigator
 			        screenOptions={({route})=>({
 			          tabBarIcon:({focused})=>{
@@ -109,12 +76,13 @@ export default class Poi extends Component{
 			        </Tab.Screen>
 			
 			    </Tab.Navigator>
-			  </View>
-		      
-		    
 	    )
 	}
 
 
 
 };
+export default Poi;
+
+  
+

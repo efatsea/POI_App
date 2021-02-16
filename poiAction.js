@@ -1,7 +1,18 @@
 async function getData(){
-	return fetch('https://warply.s3.amazonaws.com/data/test_pois.json')
-		.then(res=>res.son());	
+	return fetch('https://warply.s3.amazonaws.com/data/test_pois.json',
+	{
+
+        mode: 'no-cors',
+	    method: "post",
+            headers: {
+                 "Content-Type": "application/json"
+            },
+            body: JSON.stringify(json)
+	 })
+	.then(res=>res.json())
 }
+
+
 
 export function fetchData(){
 	return async dispatch=>{

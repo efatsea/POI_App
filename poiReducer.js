@@ -9,8 +9,8 @@ export default function poiReducer(
 	switch(action.type){
 		case FETCH_DATA:
 			return{
-				...state
-				data:action
+				...state,
+				
 			};
 		default:
 			return state;

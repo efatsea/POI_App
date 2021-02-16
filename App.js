@@ -6,17 +6,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider, connect } from 'react-redux'
+import * as thunk from 'redux-thunk'
 import Poi from './Poi';
-
-const rootReducer = (state={}, action) => {
-  return state
-}
-
-const store = createStore(rootReducer)
+import rootReducer from './rootReducer'
 
 
+
+const store = createStore(rootReducer, applyMiddleware(thunk.default));
 
 
 const Stack = createStackNavigator();
@@ -36,26 +34,36 @@ const HomeScreen = ({navigation}) =>{
     )
 }
 
+class Wrapper extends Component{
+  render(){
+    return(
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name='Home'
+            component={HomeScreen}
+            options={{title: 'Welcome'}}
+          />
+          <Stack.Screen
+            name='POI'
+            component={Poi}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+
+      )
+  }
+}
+const ConnectedWrapper =connect(state=>({
+  data: state.data
+}))(Wrapper)
 
 export default class App extends Component {
-
 
   render(){
     return (
       <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name='Home'
-              component={HomeScreen}
-              options={{title: 'Welcome'}}
-            />
-            <Stack.Screen
-              name='POI'
-              component={Poi}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <ConnectedWrapper/>
       </Provider>
       
     );
