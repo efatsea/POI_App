@@ -8,8 +8,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import {fetchData} from './poiAction'
 import List from './List'
+import MapView, {Marker} from 'react-native-maps'
+import dat from './test_pois' 
 
 
 const Tab = createBottomTabNavigator();
@@ -17,12 +18,32 @@ const Tab = createBottomTabNavigator();
 
 
 
-const Maps=()=>{
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    	<Text>Map</Text>
-    </View>
+class Maps extends Component {
+  
+	mapMarker = () =>{
+  	// dat.map((data)=>{
+  	 	return(
+	  			//<Marker
+			  	//	key={data.id}
+			  	//	coordinate={{ latitude: parseFloat(data.latitude), longitude: parseFloat(data.longitude) }}
+			  	///>	
+			  	<MapView.Marker  coordinate={{latitude: 37.78825, longitude: 38.8888}}/>  	
+	  	)
+	 //})
+  }
+
+  render(){
+  	return (
+    <MapView
+        style={{flex: 1}} 
+        region={{latitude: 37.9838,longitude: 23.7275, latitudeDelta: 10.0922,longitudeDelta: 10.0421 }} 
+        showsUserLocation={true} 
+    >
+    	{this.mapMarker()}  
+    </MapView>
   );
+  }
+  
 }
 
 const styles = StyleSheet.create({
@@ -35,20 +56,6 @@ const styles = StyleSheet.create({
 })
 
 class Poi extends Component{
-
-
-
-	findCoordinates = () => {
-		navigator.geolocation.getCurrentPosition(
-			position => {
-				const location = JSON.stringify(position);
-
-				this.setState({ location });
-			},
-			error => Alert.alert(error.message),
-			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-		);
-	};
 
 
 	render(){

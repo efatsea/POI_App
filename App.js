@@ -20,14 +20,32 @@ const store = createStore(rootReducer, applyMiddleware(thunk.default));
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const findCoordinates = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const location = JSON.stringify(position);
+        console.log(location)
+        
+      },
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
+
 const HomeScreen = ({navigation}) =>{
+
+  function handleClick(){
+    findCoordinates()
+    navigation.navigate('POI')
+  }
+
   return(
     <View style={styles.container}>
       <Text>Welcome!</Text>
       <Text>We will show you all the nice interesting places you can go!</Text>
       <Button
         title='Let me show you'
-        onPress = {()=>navigation.navigate('POI')}
+        onPress = {()=>handleClick()}
        />
       <StatusBar style="auto" />
     </View>

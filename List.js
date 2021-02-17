@@ -9,6 +9,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import {fetchData} from './poiAction'
+import datas from './test_pois.json'
+
 
 
 class List extends Component {
@@ -20,11 +22,13 @@ class List extends Component {
 	render(){
 		const {data} = this.props.data;
 		console.log(data)
+		console.log(datas)
 		return (
 
 			<View >
 		      <FlatList
-		        data={data}
+
+		        data={datas}
 		        keyExtractor={({id},index)=>id}
 		        renderItem={({item})=>(
 		          <Text>{item.address}, {item.id}</Text>
