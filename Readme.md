@@ -1,4 +1,4 @@
-#Points of Interest(POI) App
+# Points of Interest(POI) App
 
 This is an app build with react-native. It contains 2 screens,
 with a button in the first one to navigate in the second one. 
@@ -10,6 +10,6 @@ It is a partial solution.
 
 >npm install -global expo-cli
 
-![Screen 1](/img/s1)
-![Screen 2a](/img/s2a)
-![Screen 2b](/img/s2b)
+![Screen 1](/img/s1.png)
+![Screen 2a](/img/s2a.png)
+![Screen 2b](/img/s2b.png)
