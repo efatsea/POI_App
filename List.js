@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import {fetchData} from './poiAction'
 import datas from './test_pois.json'
 
-
+//the list component
 
 class List extends Component {
 
@@ -19,19 +19,21 @@ class List extends Component {
 	    this.props.dispatch(fetchData());
 	}
 
+
+
 	render(){
-		const {data} = this.props.data;
-		console.log(data)
-		console.log(datas)
+		//An attemt to fetch the position of the user.
+		//const {data} = this.props.data;
+		//console.log(this.props.locat)
+
 		return (
 
 			<View >
-		      <FlatList
-
+		      <FlatList style={'styles.text'}
 		        data={datas}
 		        keyExtractor={({id},index)=>id}
 		        renderItem={({item})=>(
-		          <Text>{item.address}, {item.id}</Text>
+		          <Text>{item.address}</Text>
 		        )}
 		      />
 			</View>
